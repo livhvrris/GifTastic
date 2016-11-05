@@ -38,13 +38,12 @@ var musicians = ['Kanye West', 'Imagine Dragons' , 'Beyonce', 'Regina Spektor' ,
 				var rating = $(musicianDiv).append('<div>');
 				rating.append('<h4><b>Rating: </b>' + ratingData + '</h4>');
 
+				var musicianSlugData = results[i].slug;
+
 				var image = $('<img>')
-				image.attr('src', results[i].images.fixed_height.url);
 				rating.append(image);
 
-				var musicianSlugData = results[i].slug;
-				var musicianSlug = image.attr('alt', musicianSlugData);
-
+				image.addClass('musicianImage').attr('src', results[i].images.fixed_height_still.url).attr('data-state', 'still').attr('data-animate', results[i].images.fixed_height.url).attr('data-still', results[i].images.fixed_height_still.url);
 			}
 		});
 	}
@@ -60,6 +59,22 @@ var musicians = ['Kanye West', 'Imagine Dragons' , 'Beyonce', 'Regina Spektor' ,
 		return false;
 
 	})
+
+	$(document).on('click', '.musicianImage', function(){
+    // console.log("OUCH!")
+
+		var state = $(this).attr('data-state')
+
+            if (state === 'animate') {
+                $(this).attr('src', $(this).attr('data-still'));
+                $(this).attr('data-state', 'still');
+            }
+
+            else if (state !== 'animate') {
+                $(this).attr('src', $(this).attr('data-animate'));
+                $(this).attr('data-state', 'animate');
+            }
+    });
 
 	renderButtons();
 
