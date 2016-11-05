@@ -19,8 +19,7 @@ var musicians = ['Kanye West', 'Imagine Dragons' , 'Beyonce', 'Regina Spektor' ,
 	function refAndRenderGifs(){
 
 		var musician = $(this).data('name');
-		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + musician + "&api_key=dc6zaTOxFJmzC&limit=1";
-
+		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + musician + "&api_key=dc6zaTOxFJmzC&limit=10";
 
         $.ajax({
                 url: queryURL,
@@ -28,26 +27,25 @@ var musicians = ['Kanye West', 'Imagine Dragons' , 'Beyonce', 'Regina Spektor' ,
             })
 
         .done(function(response) {
-			console.log(response);
 
   			var results = response.data;
 
+            for (var i = 0; i < results.length; i++) {
 
-			var musicianDiv = $("#giphyView").append('<div>');
+				var musicianDiv = $("#giphyView").append('<div>');
 
-			var musicianSlugData = results[0].slug;
-			var musicianSlug = $(musicianDiv).append('<div>');
-			musicianDiv.append('<h3><b>Title: </b>' + musicianSlugData + '</h3>');
+				var ratingData = results[i].rating;
+				var rating = $(musicianDiv).append('<div>');
+				rating.append('<h4><b>Rating: </b>' + ratingData + '</h4>');
 
-			var ratingData = results[0].rating;
-			var rating = $(musicianSlug).append('<div>');
-			rating.append('<h4><b>Rating: </b>' + ratingData + '</h4>');
+				var image = $('<img>')
+				image.attr('src', results[i].images.fixed_height.url);
+				rating.append(image);
 
-			var image = $('<img>')
-			image.attr('src', results[0].images.fixed_height.url);
-			rating.append(image);
+				var musicianSlugData = results[i].slug;
+				var musicianSlug = image.attr('alt', musicianSlugData);
 
-
+			}
 		});
 	}
 
